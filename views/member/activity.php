@@ -1,3 +1,9 @@
+<?php 
+if (!is_array($data)) {
+    echo $data;
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
