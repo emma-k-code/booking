@@ -55,10 +55,16 @@
                     <a href="newActivity">新增活動</a>
                 </li>
                 <li>
+                    <a href="newMember">新增員工</a>
+                </li>
+                <li>
                     <a href="activity">活動清單</a>
                 </li>
                 <li>
                     <a href="member">員工清單</a>
+                </li>
+                <li>
+                    <a href="logout">登出</a>
                 </li>
             </ul>
         </div>

@@ -74,13 +74,34 @@ class Admin extends Database {
         
         // 處理查詢結果
         while ($row = $result->fetch()) {
-            $showData[] = array("id"=>$row['aID'],"name"=>$row['aName'],
-                        "persons"=>$row['aPersons'],"bring"=>$row['aBringPersons'],
-                        "start"=>$row['aStartTime'],"end"=>$row['aEndTime'],
-                        "competence"=>$row['aCompetence']);
+            $showData[] = array("id"=>$row['aID'],"name"=>$row['aName'],"persons"=>$row['aPersons'],
+                        "bring"=>$row['aBringPersons'],"start"=>$row['aStartTime'],"end"=>$row['aEndTime']);
         }
         
         return $showData;
+    }
+    /* @return bool */  
+    function newActivity($name,$content,$persons,$bring,$start,$end,$competence,$limit){
+        $sql = "INSERT INTO `activity`(`aName`,`aContent`,`aPersons`,`aBringPersons`,`aStartTime`,`aEndTime`,`aCompetence`,`aLimit`) VALUES (:name,:content,:persons,:bring,:start,:end,:competence,:limit)";
+        $sth = $this->prepare($sql);
+        $sth->bindParam("name",$name);
+        $sth->bindParam("content",$content);
+        $sth->bindParam("persons",$persons);
+        $sth->bindParam("bring",$bring);
+        $sth->bindParam("start",$start);
+        $sth->bindParam("end",$end);
+        $sth->bindParam("competence",$competence);
+        $sth->bindParam("limit",$limit);
+        return $sth->execute();
+    }
+    /* @return bool */  
+    function newMember($id,$name,$competence){
+        $sql = "INSERT INTO `members`(`mID`,`mName`,`mCompetence`) VALUES (:id,:name,:competence)";
+        $sth = $this->prepare($sql);
+        $sth->bindParam("id",$id);
+        $sth->bindParam("name",$name);
+        $sth->bindParam("competence",$competence);
+        return $sth->execute();
     }
 }
 ?>

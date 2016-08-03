@@ -1,0 +1,9 @@
+.text-right {
+    text-align: right;
+}
+.text-center {
+    text-align: center;
+}
+body {
+    padding-top: 4em;
+}

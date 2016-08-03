@@ -10,3 +10,6 @@ form {
 textarea {
    resize: none;
 }
+div .from-left {
+    padding-left: 0px;
+}
