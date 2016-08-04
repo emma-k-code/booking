@@ -75,11 +75,50 @@ class Admin extends Database {
         // 處理查詢結果
         while ($row = $result->fetch()) {
             $showData[] = array("id"=>$row['aID'],"name"=>$row['aName'],"persons"=>$row['aPersons'],
-                        "bring"=>$row['aBringPersons'],"start"=>$row['aStartTime'],"end"=>$row['aEndTime']);
+                        "join"=>$row['aJoinPersons'],"start"=>$row['aStartTime'],"end"=>$row['aEndTime']);
         }
         
         return $showData;
     }
+    /* @return array */  
+    function getActivity($id){
+        $sql = "SELECT * FROM `activity` WHERE `aID` = :id";
+        $result = $this->prepare($sql);
+        $result->bindParam("id",$id);
+        $result->execute();
+        
+        // 搜尋結果為0
+        if ( $result->rowCount() == 0) {
+            return array();
+        }
+        
+        // 處理查詢結果
+        while ($row = $result->fetch()) {
+            $showData = array("id"=>$row['aID'],"name"=>$row['aName'],"content"=>$row['aContent'],
+                        "persons"=>$row['aPersons'],"bring"=>$row['aBringPersons'],
+                        "start"=>$row['aStartTime'],"end"=>$row['aEndTime'],"competence"=>$row['aCompetence'],
+                        "limit"=>$row['aLimit']);
+        }
+        
+        return $showData;
+    }
+    /* @return bool */  
+    function modifyActivity($id,$name,$content,$persons,$bring,$start,$end,$competence,$limit){
+        $sql = "UPDATE `activity` SET `aName` = :name , `aContent` = :content ,`aPersons` = :persons ,`aBringPersons` = :bring ,
+                `aStartTime` = :start ,`aEndTime` = :end ,`aCompetence` = :competence ,`aLimit` = :limit WHERE `aID` = :id";
+        $sth = $this->prepare($sql);
+        $sth->bindParam("id",$id);
+        $sth->bindParam("name",$name);
+        $sth->bindParam("content",$content);
+        $sth->bindParam("persons",$persons);
+        $sth->bindParam("bring",$bring);
+        $sth->bindParam("start",$start);
+        $sth->bindParam("end",$end);
+        $sth->bindParam("competence",$competence);
+        $sth->bindParam("limit",$limit);
+        return $sth->execute();
+    }
+    
     /* @return bool */  
     function newActivity($name,$content,$persons,$bring,$start,$end,$competence,$limit){
         $sql = "INSERT INTO `activity`(`aName`,`aContent`,`aPersons`,`aBringPersons`,`aStartTime`,`aEndTime`,`aCompetence`,`aLimit`) VALUES (:name,:content,:persons,:bring,:start,:end,:competence,:limit)";

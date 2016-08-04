@@ -52,14 +52,14 @@ class AdminController extends Controller {
         }
         
         if (isset($_POST["submit"])) {
-            $name = $_POST["activityName"];
-            $content = $_POST["activityContent"];
-            $persons = $_POST["activityPersons"];
-            $bring = $_POST["activityBring"];
-            $start = $_POST["activityStart"];
-            $end = $_POST["activityEnd"];
-            $competence = $_POST["activityCompetence"];
-            $limit = $_POST["activityLimit"];
+            $name = addslashes($_POST["activityName"]);
+            $content = addslashes($_POST["activityContent"]);
+            $persons = addslashes($_POST["activityPersons"]);
+            $bring = addslashes($_POST["activityBring"]);
+            $start = addslashes($_POST["activityStart"]);
+            $end = addslashes($_POST["activityEnd"]);
+            $competence = addslashes($_POST["activityCompetence"]);
+            $limit = addslashes($_POST["activityLimit"]);
             
             $setData = $this->model("Admin");
             $result = $setData->newActivity($name,$content,$persons,$bring,$start,$end,$competence,$limit);
@@ -80,9 +80,9 @@ class AdminController extends Controller {
         }
         
         if (isset($_POST["submit"])) {
-            $id = $_POST["memberID"];
-            $name = $_POST["memberName"];
-            $competence = $_POST["memberCompetence"];
+            $id = addslashes($_POST["memberID"]);
+            $name = addslashes($_POST["memberName"]);
+            $competence = addslashes($_POST["memberCompetence"]);
             
             $setData = $this->model("Admin");
             $result = $setData->newMember($id,$name,$competence);
@@ -100,6 +100,27 @@ class AdminController extends Controller {
         if (!($this->checkLogin)) {
             header("location: login");
             return;
+        }
+        
+        if (isset($_POST["submit"])) {
+            $id = addslashes($_POST["submit"]);
+            $name = addslashes($_POST["activityName"]);
+            $content = addslashes($_POST["activityContent"]);
+            $persons = addslashes($_POST["activityPersons"]);
+            $bring = addslashes($_POST["activityBring"]);
+            $start = addslashes($_POST["activityStart"]);
+            $end = addslashes($_POST["activityEnd"]);
+            $competence = addslashes($_POST["activityCompetence"]);
+            $limit = addslashes($_POST["activityLimit"]);
+            
+            $setData = $this->model("Admin");
+            $result = $setData->modifyActivity($id,$name,$content,$persons,$bring,$start,$end,$competence,$limit);
+            
+            if ($result) {
+                $result="修改成功";
+            }else {
+                $result="修改失敗";
+            }
         }
         
         $getData = $this->model("Admin");
@@ -122,6 +143,13 @@ class AdminController extends Controller {
         $admin = $this->model("Admin");
         $checkLogin = $admin->logout();
         header("location: login");
+    }
+    
+    function getActivity($id) {
+        $id = addslashes($id);
+        $admin = $this->model("Admin");
+        $getActivity = $admin->getActivity($id);
+        $this->view("admin/activityContent",$getActivity);
     }
 }
 ?>

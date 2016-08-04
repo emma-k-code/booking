@@ -1,7 +1,3 @@
-<link rel="stylesheet" type="text/css" href="../views/admin/datepicker/jquery.datetimepicker.css"/>
-<script src="../views/admin/datepicker/jquery.js"></script>
-<script src="../views/admin/datepicker/build/jquery.datetimepicker.full.js"></script>
-
 <?php echo "<br>".$data[1];?>
 <form method="POST">
   <div class="form-group">
@@ -43,21 +39,21 @@
   <button type="submit" class="btn btn-primary" id="submit" name="submit" >送出</button>
 </form>
 <script>
-$.datetimepicker.setLocale('zh');
-$('#activityStart').datetimepicker({
-  onShow:function(){
-   this.setOptions({
-    maxDate:jQuery('#activityEnd').val().split(" ")[0]?jQuery('#activityEnd').val().split(" ")[0]:false
-   })
-  }
- });
- 
- $('#activityEnd').datetimepicker({
-  mask:jQuery('#activityStart').val().split(" ")[0],
-  onShow:function(){
-   this.setOptions({
-    minDate:jQuery('#activityStart').val().split(" ")[0]?jQuery('#activityStart').val().split(" ")[0]:false,
-   })
-  }
- });
+  $.datetimepicker.setLocale('zh');
+  $('#activityStart').datetimepicker({
+    onShow:function(){
+     this.setOptions({
+      maxDate:jQuery('#activityEnd').val().split(" ")[0]?jQuery('#activityEnd').val().split(" ")[0]:false
+     })
+    }
+   });
+   
+   $('#activityEnd').datetimepicker({
+    mask:jQuery('#activityStart').val().split(" ")[0],
+    onShow:function(){
+     this.setOptions({
+      minDate:jQuery('#activityStart').val().split(" ")[0]?jQuery('#activityStart').val().split(" ")[0]:false,
+     })
+    }
+   });
 </script>
