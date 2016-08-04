@@ -5,7 +5,7 @@
   </div>
   <div class="form-group">
     <label for="activityContent" id="activityLable">活動內容</label>
-    <textarea class="form-control" id="activityContent" name="activityContent" rows="3" value="<?php echo $data["content"]; ?>" required></textarea>
+    <textarea class="form-control" id="activityContent" name="activityContent" rows="3" required><?php echo $data["content"]; ?></textarea>
   </div>
   <div class="col-lg-12 from-left">
     <div class="form-group col-lg-2 from-left">

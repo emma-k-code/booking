@@ -33,7 +33,7 @@ tbody tr:last-child td {border: none;}
 tbody td {border-bottom: 1px solid #ddd;}
 
 td:last-child {
-  text-align: right;
+  text-align: center;
   padding-right: 10px;
 }
 

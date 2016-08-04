@@ -75,7 +75,7 @@ class Admin extends Database {
         // 處理查詢結果
         while ($row = $result->fetch()) {
             $showData[] = array("id"=>$row['aID'],"name"=>$row['aName'],"persons"=>$row['aPersons'],
-                        "join"=>$row['aJoinPersons'],"start"=>$row['aStartTime'],"end"=>$row['aEndTime']);
+                        "remain"=>$row['aRemain'],"start"=>$row['aStartTime'],"end"=>$row['aEndTime']);
         }
         
         return $showData;
@@ -118,10 +118,9 @@ class Admin extends Database {
         $sth->bindParam("limit",$limit);
         return $sth->execute();
     }
-    
     /* @return bool */  
     function newActivity($name,$content,$persons,$bring,$start,$end,$competence,$limit){
-        $sql = "INSERT INTO `activity`(`aName`,`aContent`,`aPersons`,`aBringPersons`,`aStartTime`,`aEndTime`,`aCompetence`,`aLimit`) VALUES (:name,:content,:persons,:bring,:start,:end,:competence,:limit)";
+        $sql = "INSERT INTO `activity`(`aName`,`aContent`,`aPersons`,`aRemain`,`aBringPersons`,`aStartTime`,`aEndTime`,`aCompetence`,`aLimit`) VALUES (:name,:content,:persons,:persons,:bring,:start,:end,:competence,:limit)";
         $sth = $this->prepare($sql);
         $sth->bindParam("name",$name);
         $sth->bindParam("content",$content);
@@ -131,7 +130,27 @@ class Admin extends Database {
         $sth->bindParam("end",$end);
         $sth->bindParam("competence",$competence);
         $sth->bindParam("limit",$limit);
+        
         return $sth->execute();
+    }
+    /* @return array */  
+    function getSignUpList($aID){
+        $sql = "SELECT `activity`.`aName`,`members`.`mID`,`members`.`mName`,`signUpList`.`persons` FROM `signUpList` INNER JOIN `activity` INNER JOIN `members` ON `signUpList`.`aID` = :aID AND `activity`.`aID` = :aID AND `signUpList`.`mID` = `members`.`mID`;";
+        $result = $this->prepare($sql);
+        $result->bindParam("aID",$aID);
+        $result->execute();
+        
+        // 搜尋結果為0
+        if ( $result->rowCount() == 0) {
+            return array();
+        }
+        
+        // 處理查詢結果
+        while ($row = $result->fetch()) {
+            $showData[] = array($row["aName"],$row["mID"],$row["mName"],$row["persons"]);
+        }
+        
+        return $showData;
     }
     /* @return bool */  
     function newMember($id,$name,$competence){

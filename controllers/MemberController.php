@@ -5,20 +5,41 @@ class MemberController extends Controller {
     }
     
     function activity($id) {
-        $id = addslashes($id);
         $getData = $this->model("Member");
-        $activity = $getData->getActivity($id);
+        // 如果按下報名按鈕
+        if (isset($_POST["submit"])) {
+            $aID = addslashes($_POST["activityID"]);
+            $mID = addslashes($_POST["memberID"]);
+            $name = addslashes($_POST["memberName"]);
+            $bring= addslashes($_POST["memberBring"]);
+            
+            $competence = $getData->chekcMember($mID,$name);
+            
+            if ($competence > 0) {
+                $signUp = $getData->signUpActivity($aID,$mID,$bring,$competence);
+            }
+            
+            if ($signUp) {
+                $output = "加入成功";
+            }else {
+                $output = "加入失敗";
+            }
+            
+        }else {
+            $output = $getData->getActivity($id);
         
-        $start = $activity["start"];
-        $end =$activity["end"];
-        
-        if ((time() - strtotime($start)) < 0){
-            $activity = "尚未開始" ;
-        }elseif((time() - strtotime($end)) > 0) {
-            $activity = "已經截止" ;
+            $start = $output["start"];
+            $end =$output["end"];
+            
+            date_default_timezone_set("Asia/Taipei");
+            if ((time() - strtotime($start)) < 0){
+                $output = "尚未開始" ;
+            }elseif((time() - strtotime($end)) > 0) {
+                $output = "已經截止" ;
+            }
         }
         
-        $this->view("member/activity",$activity);
+        $this->view("member/activity",$output);
     }
 }
 ?>

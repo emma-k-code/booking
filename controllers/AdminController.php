@@ -9,6 +9,7 @@ class AdminController extends Controller {
     }
     
     function index() {
+        // 判斷是否有登入
         if (!($this->checkLogin)) {
             header("location: Admin/login");
             return;
@@ -19,7 +20,7 @@ class AdminController extends Controller {
     }
     
     function login() {
-        
+        // 判斷是否有登入
         if ($this->checkLogin) {
             header("location: activity");
             return;
@@ -35,7 +36,7 @@ class AdminController extends Controller {
             // 判斷登入成功與否
             $checkLogin = $admin->login($id,$password);
             
-            // 登入成功進入首頁
+            // 登入成功進入管理者頁面
             if ($checkLogin=="OK") {
                 header("location: activity");
                 return;
@@ -46,11 +47,13 @@ class AdminController extends Controller {
     }
     
     function newActivity() {
+        // 判斷是否有登入
         if (!($this->checkLogin)) {
             header("location: login");
             return;
         }
         
+        // 如果有送出資料(新增)
         if (isset($_POST["submit"])) {
             $name = addslashes($_POST["activityName"]);
             $content = addslashes($_POST["activityContent"]);
@@ -74,11 +77,13 @@ class AdminController extends Controller {
     }
     
     function newMember() {
+        // 判斷是否有登入
         if (!($this->checkLogin)) {
             header("location: login");
             return;
         }
         
+        // 如果有送出資料(新增)
         if (isset($_POST["submit"])) {
             $id = addslashes($_POST["memberID"]);
             $name = addslashes($_POST["memberName"]);
@@ -97,11 +102,13 @@ class AdminController extends Controller {
     }
     
     function activity() {
+        // 判斷是否有登入
         if (!($this->checkLogin)) {
             header("location: login");
             return;
         }
         
+        // 如果有送出資料(修改)
         if (isset($_POST["submit"])) {
             $id = addslashes($_POST["submit"]);
             $name = addslashes($_POST["activityName"]);
@@ -129,6 +136,7 @@ class AdminController extends Controller {
     }
     
     function member() {
+        // 判斷是否有登入
         if (!($this->checkLogin)) {
             header("location: login");
             return;
@@ -150,6 +158,13 @@ class AdminController extends Controller {
         $admin = $this->model("Admin");
         $getActivity = $admin->getActivity($id);
         $this->view("admin/activityContent",$getActivity);
+    }
+    
+    function getSignUpList($id) {
+        $id = addslashes($id);
+        $admin = $this->model("Admin");
+        $getActivity = $admin->getSignUpList($id);
+        $this->view("admin/signUpList",$getActivity);
     }
 }
 ?>

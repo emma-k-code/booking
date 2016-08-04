@@ -20,7 +20,7 @@ if (!is_array($data)) {
       <ul class="price">
         <li class="header"><?php echo $data["name"];?></li>
         <li class="grey"><?php echo $data["content"];?></li>
-        <li>人數限制：<?php echo $data["persons"];?></li>
+        <li>剩餘人數：<?php echo $data["remain"];?></li>
         <li>可攜伴人數：<?php echo $data["bring"];?></li>
         <li>開始時間：<?php echo $data["start"];?></li>
         <li>截止時間：<?php echo $data["end"];?></li>
@@ -40,10 +40,17 @@ if (!is_array($data)) {
             <li>
                 <div class="form-group">
                     <label for="memberName" id="activityLable">員工名稱</label>
-                    <input type="text" class="form-control" id="memberName" name="memberName" required></textarea>
+                    <input type="text" class="form-control" id="memberName" name="memberName" required>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <label for="memberBring" id="activityLable">攜伴人數</label>
+                    <input type="number" min="0" class="form-control" id="memberBring" name="memberBring" value="0" required>
                 </div>
             </li>
             <li class="grey">
+            <input type="hidden" class="form-control" id="activityID" name="activityID" value="<?php echo $data["id"];?>">
             <button type="submit" class="button" id="submit" name="submit" >送出</button>
             </li>
           </ul>
