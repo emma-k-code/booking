@@ -9,14 +9,12 @@ class MemberController extends Controller {
         $getData = $this->model("Member");
         $activity = $getData->getActivity($id);
         
-        $start = new DateTime($activity["start"]);
-        $end = new DateTime($activity["end"]);
-        $now = new DateTime(date("Y-m-d h:i:s"));
+        $start = $activity["start"];
+        $end =$activity["end"];
         
-        // 有bug
-        if ($now > $start){
+        if ((time() - strtotime($start)) < 0){
             $activity = "尚未開始" ;
-        }elseif($now > $end) {
+        }elseif((time() - strtotime($end)) > 0) {
             $activity = "已經截止" ;
         }
         
