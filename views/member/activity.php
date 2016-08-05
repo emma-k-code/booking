@@ -9,6 +9,9 @@ if (!is_array($data)) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>活動報名頁面</title>
+    
     <link href="../../views/member/css/pricing.css" rel="stylesheet">
     <link href="../../views/member/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../views/member/css/custom.css" rel="stylesheet">

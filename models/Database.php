@@ -28,7 +28,7 @@ class Database {
         return $this->connection->prepare($sql);
     }
     public function transaction() {
-        $this->connection->begintransaction();
+        $this->connection->beginTransaction();
     }
     public function commit() {
         $this->connection->commit();

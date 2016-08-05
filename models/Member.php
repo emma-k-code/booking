@@ -40,7 +40,6 @@ class Member extends Database {
         $row = $result->fetch();
         return $row['mCompetence'];
     }
-    
     /* @return string */  
     function signUpActivity($aID,$mID,$bring,$mCompetence) {
         try {
@@ -51,7 +50,7 @@ class Member extends Database {
             $result = $this->prepare($sql);
             $result->bindParam("id",$aID);
             $result->execute();
-            
+            sleep(7);
             // 取得剩餘人數、可攜伴人數、限定權限、限制員工、開始時間、截止時間
             $row = $result->fetch();
             $remain = $row['aRemain'];
