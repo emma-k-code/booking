@@ -14,16 +14,16 @@
     <?php foreach ($data as $value) : ?>
     <tr>
       <td>
-        <?php echo $value[0];?>
+        <?php echo $value["aName"];?>
       </td>
       <td>
-        <?php echo $value[1];?>
+        <?php echo $value["mID"];?>
       </td>
       <td>
-        <?php echo $value[2];?>
+        <?php echo $value["mName"];?>
       </td>
       <td>
-        <?php echo $value[3];?>
+        <?php echo $value["persons"];?>
       </td>
     </tr>
     

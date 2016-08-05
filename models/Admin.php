@@ -12,36 +12,25 @@ class Admin extends Database {
         $result->bindParam('password',$password);
         $result->execute();
         
-        // 如果搜尋結果為0
-        if ( $result->rowCount() == 0) {
-            return "輸入帳號或密碼錯誤";
-        }
+        $row = $result->fetch();
+        $admin = $row['adminID'].$row['adminPassword'];
         
-        // 處理查詢結果
-        while ($row = $result->fetch())
-        {
-            $admin = $row['adminID'].$row['adminPassword'];
-        }
-        
-        // 將管理者資料存成SESSION
-        $_SESSION['admin'] = $admin;
-        
-        return "OK";
-    }
-    /* @return bool */  
-    function checkLogin() {
-        if (isset($_SESSION['admin'])) {
+        if ($admin != null) {
+            // 將管理者資料存成SESSION
+            $_SESSION['admin'] = $admin;
             return true;
         }else {
             return false;
         }
+        
     }
-    /* @return string */  
+    /* @return bool */  
+    function checkLogin() {
+        return isset($_SESSION['admin']);
+    }
     function logout() {
         // 刪除session
         session_destroy();
-        
-        return "登出成功";
     }
     /* @return array */  
     function getMemberList(){
@@ -49,36 +38,34 @@ class Admin extends Database {
         $result = $this->prepare($sql);
         $result->execute();
         
-        // 搜尋結果為0
-        if ( $result->rowCount() == 0) {
-            return array();
-        }
-        
-        // 處理查詢結果
-        while ($row = $result->fetch()) {
-            $showData[] = array("id"=>$row['mID'],"name"=>$row['mName'],"competence"=>$row['mCompetence']);
-        }
-        
-        return $showData;
+        return $showData = $result->fetchAll();
     }
     /* @return array */  
+    function getMember($id){
+        $sql = "SELECT * FROM `members` WHERE `mID` = :id";
+        $result = $this->prepare($sql);
+        $result->bindParam("id",$id);
+        $result->execute();
+        
+        return $showData = $result->fetch();
+    }
+    /* @return bool */  
+    function modifyMember($oldID,$newID,$name,$competence){
+        $sql = "UPDATE `members` SET `mID` = :newID , `mName` = :name ,`mCompetence` = :competence WHERE `mID` = :oldID";
+        $sth = $this->prepare($sql);
+        $sth->bindParam("newID",$newID);
+        $sth->bindParam("name",$name);
+        $sth->bindParam("competence",$competence);
+        $sth->bindParam("oldID",$oldID);
+        return $sth->execute();
+    }
+    /* @return array(array()) */  
     function getActivityList(){
         $sql = "SELECT * FROM `activity`";
         $result = $this->prepare($sql);
         $result->execute();
         
-        // 搜尋結果為0
-        if ( $result->rowCount() == 0) {
-            return array();
-        }
-        
-        // 處理查詢結果
-        while ($row = $result->fetch()) {
-            $showData[] = array("id"=>$row['aID'],"name"=>$row['aName'],"persons"=>$row['aPersons'],
-                        "remain"=>$row['aRemain'],"start"=>$row['aStartTime'],"end"=>$row['aEndTime']);
-        }
-        
-        return $showData;
+        return $showData = $result->fetchAll();
     }
     /* @return array */  
     function getActivity($id){
@@ -87,24 +74,18 @@ class Admin extends Database {
         $result->bindParam("id",$id);
         $result->execute();
         
-        // 搜尋結果為0
-        if ( $result->rowCount() == 0) {
-            return array();
-        }
-        
-        // 處理查詢結果
-        while ($row = $result->fetch()) {
-            $showData = array("id"=>$row['aID'],"name"=>$row['aName'],"content"=>$row['aContent'],
-                        "persons"=>$row['aPersons'],"bring"=>$row['aBringPersons'],
-                        "start"=>$row['aStartTime'],"end"=>$row['aEndTime'],"competence"=>$row['aCompetence'],
-                        "limit"=>$row['aLimit']);
-        }
+        $row = $result->fetch();
+        $showData = array("id"=>$row['aID'],"name"=>$row['aName'],"content"=>$row['aContent'],
+                    "persons"=>$row['aPersons'],"bring"=>$row['aBringPersons'],
+                    "start"=>$row['aStartTime'],"end"=>$row['aEndTime'],"competence"=>$row['aCompetence'],
+                    "limit"=>$row['aLimit']);
+    
         
         return $showData;
     }
     /* @return bool */  
     function modifyActivity($id,$name,$content,$persons,$bring,$start,$end,$competence,$limit){
-        $sql = "UPDATE `activity` SET `aName` = :name , `aContent` = :content ,`aPersons` = :persons ,`aBringPersons` = :bring ,
+        $sql = "UPDATE `activity` SET `aName` = :name , `aContent` = :content ,`aPersons` = :persons ,`aRemain` = :persons,`aBringPersons` = :bring ,
                 `aStartTime` = :start ,`aEndTime` = :end ,`aCompetence` = :competence ,`aLimit` = :limit WHERE `aID` = :id";
         $sth = $this->prepare($sql);
         $sth->bindParam("id",$id);
@@ -140,17 +121,7 @@ class Admin extends Database {
         $result->bindParam("aID",$aID);
         $result->execute();
         
-        // 搜尋結果為0
-        if ( $result->rowCount() == 0) {
-            return array();
-        }
-        
-        // 處理查詢結果
-        while ($row = $result->fetch()) {
-            $showData[] = array($row["aName"],$row["mID"],$row["mName"],$row["persons"]);
-        }
-        
-        return $showData;
+        return $showData = $result->fetchAll();
     }
     /* @return bool */  
     function newMember($id,$name,$competence){

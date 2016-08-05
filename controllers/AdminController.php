@@ -3,19 +3,18 @@ class AdminController extends Controller {
     private $checkLogin;
     
     function __construct() {
-        $admin = $this->model("Admin");
         // 判斷是否有登入
-        $this->checkLogin = $admin->checkLogin();
+        $this->checkLogin = $this->model("Admin")->checkLogin();
     }
     
     function index() {
         // 判斷是否有登入
         if (!($this->checkLogin)) {
             header("location: Admin/login");
-            return;
+            exit;
         }else {
             header("location: Admin/activity");
-            return;
+            exit;
         }
     }
     
@@ -23,7 +22,7 @@ class AdminController extends Controller {
         // 判斷是否有登入
         if ($this->checkLogin) {
             header("location: activity");
-            return;
+            exit;
         }
         
         // 如果按下登入按鈕
@@ -37,9 +36,11 @@ class AdminController extends Controller {
             $checkLogin = $admin->login($id,$password);
             
             // 登入成功進入管理者頁面
-            if ($checkLogin=="OK") {
+            if ($checkLogin) {
                 header("location: activity");
                 return;
+            }else {
+                $checkLogin = "輸入帳號或密碼錯誤";
             }
             
         }
@@ -50,7 +51,7 @@ class AdminController extends Controller {
         // 判斷是否有登入
         if (!($this->checkLogin)) {
             header("location: login");
-            return;
+            exit;
         }
         
         // 如果有送出資料(新增)
@@ -64,8 +65,7 @@ class AdminController extends Controller {
             $competence = addslashes($_POST["activityCompetence"]);
             $limit = addslashes($_POST["activityLimit"]);
             
-            $setData = $this->model("Admin");
-            $result = $setData->newActivity($name,$content,$persons,$bring,$start,$end,$competence,$limit);
+            $result = $this->model("Admin")->newActivity($name,$content,$persons,$bring,$start,$end,$competence,$limit);
             
             if ($result) {
                 $result="新增成功";
@@ -80,7 +80,7 @@ class AdminController extends Controller {
         // 判斷是否有登入
         if (!($this->checkLogin)) {
             header("location: login");
-            return;
+            exit;
         }
         
         // 如果有送出資料(新增)
@@ -89,8 +89,7 @@ class AdminController extends Controller {
             $name = addslashes($_POST["memberName"]);
             $competence = addslashes($_POST["memberCompetence"]);
             
-            $setData = $this->model("Admin");
-            $result = $setData->newMember($id,$name,$competence);
+            $result = $this->model("Admin")->newMember($id,$name,$competence);
             
             if ($result) {
                 $result="新增成功";
@@ -105,8 +104,10 @@ class AdminController extends Controller {
         // 判斷是否有登入
         if (!($this->checkLogin)) {
             header("location: login");
-            return;
+            exit;
         }
+        
+        $activityData = $this->model("Admin");
         
         // 如果有送出資料(修改)
         if (isset($_POST["submit"])) {
@@ -119,9 +120,8 @@ class AdminController extends Controller {
             $end = addslashes($_POST["activityEnd"]);
             $competence = addslashes($_POST["activityCompetence"]);
             $limit = addslashes($_POST["activityLimit"]);
-            
-            $setData = $this->model("Admin");
-            $result = $setData->modifyActivity($id,$name,$content,$persons,$bring,$start,$end,$competence,$limit);
+
+            $result = $activityData->modifyActivity($id,$name,$content,$persons,$bring,$start,$end,$competence,$limit);
             
             if ($result) {
                 $result="修改成功";
@@ -130,39 +130,58 @@ class AdminController extends Controller {
             }
         }
         
-        $getData = $this->model("Admin");
-        $activity = $getData->getActivityList();
-        $this->view("admin/admin",array("activityTable",$activity));
+        $activityList = $activityData->getActivityList();
+        $this->view("admin/admin",array("activityTable",$activityList));
     }
     
     function member() {
         // 判斷是否有登入
         if (!($this->checkLogin)) {
             header("location: login");
-            return;
+            exit;
         }
         
-        $getData = $this->model("Admin");
-        $member = $getData->getMemberList();
-        $this->view("admin/admin",array("memberTable",$member));
+        $memberData = $this->model("Admin");
+        
+        // 如果有送出資料(修改)
+        if (isset($_POST["submit"])) {
+            $oldID = $_POST["submit"];
+            $newID = addslashes($_POST["memberID"]);
+            $name = addslashes($_POST["memberName"]);
+            $competence = addslashes($_POST["memberCompetence"]);
+
+            $result = $memberData->modifyMember($oldID,$newID,$name,$competence);
+            
+            if ($result) {
+                $result="修改成功";
+            }else {
+                $result="修改失敗";
+            }
+        }
+        
+        $memberList = $memberData->getMemberList();
+        $this->view("admin/admin",array("memberTable",$memberList));
     }
     
     function logout() {
-        $admin = $this->model("Admin");
-        $checkLogin = $admin->logout();
+        $this->model("Admin")->logout();
         header("location: login");
+        exit;
     }
     
     function getActivity($id) {
-        $admin = $this->model("Admin");
-        $getActivity = $admin->getActivity(addslashes($id));
+        $getActivity = $this->model("Admin")->getActivity(addslashes($id));
         $this->view("admin/activityContent",$getActivity);
     }
     
     function getSignUpList($id) {
-        $admin = $this->model("Admin");
-        $getActivity = $admin->getSignUpList(addslashes($id));
+        $getActivity = $this->model("Admin")->getSignUpList(addslashes($id));
         $this->view("admin/signUpList",$getActivity);
+    }
+    
+    function getMember($id) {
+        $getMember = $this->model("Admin")->getMember(addslashes($id));
+        $this->view("admin/memberContent",$getMember);
     }
 }
 ?>

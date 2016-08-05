@@ -17,26 +17,26 @@
     <?php foreach ($data[1] as $value) : ?>
     <tr>
       <td>
-        <?php echo $value["name"];?>
+        <?php echo $value["aName"];?>
       </td>
       <td>
-        <?php echo $value["persons"];?>
+        <?php echo $value["aPersons"];?>
       </td>
       <td>
-        <?php echo $value["remain"];?>
+        <?php echo $value["aRemain"];?>
       </td>
       <td>
-        <?php echo $value["start"];?>
+        <?php echo $value["aStartTime"];?>
       </td>
       <td>
-        <?php echo $value["end"];?>
+        <?php echo $value["aEndTime"];?>
       </td>
       <td>
-        <a href="<?php echo "https://booking-emma02.c9users.io/BookingWeb/Member/activity/".$value["id"];?>" target="_blank">
+        <a href="<?php echo "https://booking-emma02.c9users.io/BookingWeb/Member/activity/".$value["aID"];?>" target="_blank">
           <i class="glyphicon glyphicon-share button alterar"></i>
         </a>
-        <i id="activity-<?php echo $value["id"];?>" class="glyphicon glyphicon-pencil button alterar" data-toggle="modal" data-target="#myModal"></i>
-        <i id="signUp-<?php echo $value["id"];?>" class="glyphicon glyphicon-list-alt button excluir"  data-toggle="modal" data-target="#signUpMembers"></i>
+        <i id="activity-<?php echo $value["aID"];?>" class="glyphicon glyphicon-pencil button alterar" data-toggle="modal" data-target="#myModal"></i>
+        <i id="signUp-<?php echo $value["aID"];?>" class="glyphicon glyphicon-list-alt button excluir"  data-toggle="modal" data-target="#signUpMembers"></i>
       </td>
     </tr>
     <?php endforeach ;?>

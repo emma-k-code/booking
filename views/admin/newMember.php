@@ -14,4 +14,3 @@
   </div>
   <button type="submit" class="btn btn-primary" id="submit" name="submit" >送出</button>
 </form>
-</script>

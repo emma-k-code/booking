@@ -47,8 +47,7 @@ class MemberController extends Controller {
     }
     
     function getActivityPersons($id) {
-        $getData = $this->model("Member");
-        $remain = $getData->getActivityPersons(addslashes($id));
+        $remain = $this->model("Member")->getActivityPersons(addslashes($id));
         $this->view("member/showData",$remain);
     }
 }
