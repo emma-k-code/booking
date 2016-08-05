@@ -45,7 +45,19 @@ class Member extends Database {
         try {
             $this->transaction();
             
+            // 搜尋報名員工
+            $sql = "SELECT * FROM `signUpList` WHERE `aID` = :aID AND `mID` = :mID";
+            $result = $this->prepare($sql);
+            $result->bindParam("aID",$aID);
+            $result->bindParam("mID",$mID);
+            $result->execute();
+            
+            if ($result->rowCount() > 0) {
+                throw new Exception("已報名過");
+            }
+            
             // 搜尋活動資訊
+            $result = null;
             $sql = "SELECT * FROM `activity` WHERE `aID` = :id FOR UPDATE";
             $result = $this->prepare($sql);
             $result->bindParam("id",$aID);
@@ -84,23 +96,26 @@ class Member extends Database {
                 throw new Exception("非可報名權限");
             }
             
-            // 更新剩餘人數
             $persons = $bring+1;
+            // 更新剩餘人數
             $sql = "UPDATE `activity` SET `aRemain` = `aRemain`- :persons WHERE `aID` = :id";
             $sth = $this->prepare($sql);
             $sth->bindParam("id",$aID);
             $sth->bindParam("persons",$persons);
-            $sth->execute();
+            if (!$sth->execute()) {
+                throw new Exception("報名失敗");
+            }
             
             // 新增報名員工
             $sth = null;
-            $persons = $bring+1;
             $sql = "INSERT INTO `signUpList`(`aID`,`mID`,`persons`) VALUES (:aID,:mID,:persons)";
             $sth = $this->prepare($sql);
             $sth->bindParam("aID",$aID);
             $sth->bindParam("mID",$mID);
             $sth->bindParam("persons",$persons);
-            $sth->execute();
+            if (!$sth->execute()) {
+                throw new Exception("報名失敗");
+            }
             
             $this->commit();
         }catch(Exception $e) {

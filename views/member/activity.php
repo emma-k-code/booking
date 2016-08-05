@@ -24,7 +24,7 @@ if (!is_array($data)) {
             refresh()    
             setInterval(function(){
                 refresh() // this will run after every 5 seconds
-            }, 500);
+            }, 1000);
         }
         
         function refresh() {
@@ -79,7 +79,7 @@ if (!is_array($data)) {
             </li>
             <li class="grey">
             <input type="hidden" class="form-control" id="activityID" name="activityID" value="<?php echo $data["id"];?>">
-            <button type="submit" class="button" id="submit" name="submit" >送出</button>
+            <input type="submit" class="button" id="submit" name="submit" value="送出">
             </li>
           </ul>
         </form>
