@@ -50,7 +50,7 @@ class Member extends Database {
             $result = $this->prepare($sql);
             $result->bindParam("id",$aID);
             $result->execute();
-            sleep(7);
+            
             // 取得剩餘人數、可攜伴人數、限定權限、限制員工、開始時間、截止時間
             $row = $result->fetch();
             $remain = $row['aRemain'];
@@ -75,7 +75,7 @@ class Member extends Database {
             // 檢查限制
             if (($limit != null) || ($limit != "")) {
                 $limit = explode(",",$limit);
-                if (array_search($mID,$limit) == null) {
+                if (!in_array($mID,$limit)) {
                     throw new Exception("非可報名員工");
                 }
             }
@@ -104,6 +104,7 @@ class Member extends Database {
             
             $this->commit();
         }catch(Exception $e) {
+            $this->rollBack();
             $error = $e->getMessage();
         }
         

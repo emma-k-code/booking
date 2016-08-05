@@ -61,7 +61,7 @@ class Admin extends Database {
     }
     /* @return array(array()) */  
     function getActivityList(){
-        $sql = "SELECT * FROM `activity`";
+        $sql = "SELECT * FROM `activity` ORDER BY `aEndTime`";
         $result = $this->prepare($sql);
         $result->execute();
         

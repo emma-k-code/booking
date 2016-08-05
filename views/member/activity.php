@@ -48,7 +48,7 @@ if (!is_array($data)) {
         <li>開始時間：<?php echo $data["start"];?></li>
         <li>截止時間：<?php echo $data["end"];?></li>
         <li>權限限制：<?php echo $data["competence"];?></li>
-        <li>限制人員：</li><?php echo $data["limit"];?></li>
+        <li>限制人員：<?php echo $data["limit"];?></li>
       </ul>
     </div>
      <div class="columns col-lg-4">

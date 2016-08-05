@@ -33,5 +33,8 @@ class Database {
     public function commit() {
         $this->connection->commit();
     }
+    public function rollBack() {
+        $this->connection->rollBack();
+    }
 }
 ?>
