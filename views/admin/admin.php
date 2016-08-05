@@ -43,7 +43,7 @@
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
-                    <a href="admin">
+                    <a href="activity">
                         管理者頁面
                     </a>
                 </li>

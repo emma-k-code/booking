@@ -154,16 +154,14 @@ class AdminController extends Controller {
     }
     
     function getActivity($id) {
-        $id = addslashes($id);
         $admin = $this->model("Admin");
-        $getActivity = $admin->getActivity($id);
+        $getActivity = $admin->getActivity(addslashes($id));
         $this->view("admin/activityContent",$getActivity);
     }
     
     function getSignUpList($id) {
-        $id = addslashes($id);
         $admin = $this->model("Admin");
-        $getActivity = $admin->getSignUpList($id);
+        $getActivity = $admin->getSignUpList(addslashes($id));
         $this->view("admin/signUpList",$getActivity);
     }
 }

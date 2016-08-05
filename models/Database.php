@@ -27,6 +27,11 @@ class Database {
     {
         return $this->connection->prepare($sql);
     }
+    public function transaction() {
+        $this->connection->begintransaction();
+    }
+    public function commit() {
+        $this->connection->commit();
+    }
 }
-
 ?>

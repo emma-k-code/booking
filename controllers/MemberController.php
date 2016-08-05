@@ -6,28 +6,32 @@ class MemberController extends Controller {
     
     function activity($id) {
         $getData = $this->model("Member");
-        // 如果按下報名按鈕
+        
         if (isset($_POST["submit"])) {
-            $aID = addslashes($_POST["activityID"]);
-            $mID = addslashes($_POST["memberID"]);
-            $name = addslashes($_POST["memberName"]);
-            $bring= addslashes($_POST["memberBring"]);
+            // 按下報名按鈕
+            $aID = addslashes($_POST["activityID"]); // 活動ID
+            $mID = addslashes($_POST["memberID"]);  // 員工ID
+            $name = addslashes($_POST["memberName"]); // 員工名稱
+            $bring= addslashes($_POST["memberBring"]); // 攜伴人數
             
-            $competence = $getData->chekcMember($mID,$name);
+            // 員工權限
+            $competence = $getData->getMemberCompetence($mID,$name);
             
             if ($competence > 0) {
                 $signUp = $getData->signUpActivity($aID,$mID,$bring,$competence);
-            }
-            
-            if ($signUp) {
-                $output = "加入成功";
+                if ($signUp == null) {
+                    $output = "加入成功";
+                }else {
+                    $output = $signUp;
+                }
             }else {
-                $output = "加入失敗";
+                $output = "編號或名稱不正確";
             }
-            
         }else {
+            // 顯示活動資訊
             $output = $getData->getActivity($id);
-        
+            
+            // 檢查活動日期
             $start = $output["start"];
             $end =$output["end"];
             
@@ -40,6 +44,12 @@ class MemberController extends Controller {
         }
         
         $this->view("member/activity",$output);
+    }
+    
+    function getActivityPersons($id) {
+        $getData = $this->model("Member");
+        $remain = $getData->getActivityPersons(addslashes($id));
+        $this->view("member/showData",$remain);
     }
 }
 ?>

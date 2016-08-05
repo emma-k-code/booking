@@ -12,6 +12,26 @@ if (!is_array($data)) {
     <link href="../../views/member/css/pricing.css" rel="stylesheet">
     <link href="../../views/member/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../views/member/css/custom.css" rel="stylesheet">
+    <script src="../../views/member/js/jquery.js"></script>
+    
+    <script >
+        $(document).ready(init);
+        
+        function init() {
+            refresh()    
+            setInterval(function(){
+                refresh() // this will run after every 5 seconds
+            }, 500);
+        }
+        
+        function refresh() {
+            $("#nowLable").text(Date());
+            $.get("../getActivityPersons/" + $("#activityID").val() , function(data){
+                $("#aPersons").text("剩餘人數：" + data);
+        	});
+        }
+    </script>
+    
 <head>
 
 <body>
@@ -20,7 +40,7 @@ if (!is_array($data)) {
       <ul class="price">
         <li class="header"><?php echo $data["name"];?></li>
         <li class="grey"><?php echo $data["content"];?></li>
-        <li>剩餘人數：<?php echo $data["remain"];?></li>
+        <li id="aPersons">剩餘人數：<?php echo $data["remain"];?></li>
         <li>可攜伴人數：<?php echo $data["bring"];?></li>
         <li>開始時間：<?php echo $data["start"];?></li>
         <li>截止時間：<?php echo $data["end"];?></li>
@@ -33,7 +53,12 @@ if (!is_array($data)) {
           <ul class="price">
             <li>
                 <div class="form-group">
-                    <label for="memberID" id="activityLable">員工編號</label>
+                    <label id="nowLable">員工編號</label>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <label for="memberID" id="activityLable"></label>
                     <input type="text" class="form-control" id="memberID" name="memberID" placeholder="" required>
                 </div>
             </li>
