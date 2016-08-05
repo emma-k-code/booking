@@ -52,13 +52,19 @@ class Member extends Database {
             $result->bindParam("id",$aID);
             $result->execute();
             
-            // 取得剩餘人數、可攜伴人數、限定權限、限制員工
+            // 取得剩餘人數、可攜伴人數、限定權限、限制員工、開始時間、截止時間
             $row = $result->fetch();
             $remain = $row['aRemain'];
             $aBring = $row['aBringPersons'];
             $aCompetence = $row['aCompetence'];
             $limit = $row['aLimit'];
+            $start = $row['aStartTime'];
+            $end = $row['aEndTime'];
             
+            // 檢查報名時間
+            if (!($this->checkTime($start,$end))) {
+                throw new Exception("不在可報名時間");
+            }
             // 檢查攜帶人數
             if ($bring > $aBring) {
                 throw new Exception("超過攜帶人數");
@@ -103,7 +109,15 @@ class Member extends Database {
         }
         
         return $error;
-
+    }
+    /* @return bool */
+    function checkTime($start,$end) {
+        date_default_timezone_set("Asia/Taipei");
+        if (((time() - strtotime($start)) < 0) || ((time() - strtotime($end)) > 0)){
+            return false;
+        }else {
+            return true;
+        }
     }
 }
     

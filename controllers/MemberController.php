@@ -32,14 +32,9 @@ class MemberController extends Controller {
             $output = $getData->getActivity($id);
             
             // 檢查活動日期
-            $start = $output["start"];
-            $end =$output["end"];
-            
-            date_default_timezone_set("Asia/Taipei");
-            if ((time() - strtotime($start)) < 0){
-                $output = "尚未開始" ;
-            }elseif((time() - strtotime($end)) > 0) {
-                $output = "已經截止" ;
+            $checkTime = $getData->checkTime($output["start"],$output["end"]);
+            if (!$checkTime) {
+                $output = "不在可報名時間";
             }
         }
         

@@ -121,7 +121,7 @@ class Admin extends Database {
     }
     /* @return bool */  
     function newActivity($name,$content,$persons,$bring,$start,$end,$competence,$limit){
-        $sql = "INSERT INTO `activity`(`aName`,`aContent`,`aPersons`,`aRemain`,`aBringPersons`,`aStartTime`,`aEndTime`,`aCompetence`,`aLimit`) VALUES (:name,:content,:persons,:persons,:bring,:start,:end,:competence,:limit)";
+        $sql = "INSERT INTO `activity`(`aID`,`aName`,`aContent`,`aPersons`,`aRemain`,`aBringPersons`,`aStartTime`,`aEndTime`,`aCompetence`,`aLimit`) VALUES ((RAND()*1000000),:name,:content,:persons,:persons,:bring,:start,:end,:competence,:limit)";
         $sth = $this->prepare($sql);
         $sth->bindParam("name",$name);
         $sth->bindParam("content",$content);
