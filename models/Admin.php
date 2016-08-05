@@ -100,6 +100,26 @@ class Admin extends Database {
         return $sth->execute();
     }
     /* @return bool */  
+    function deleteActivity($id){
+        try {
+            $this->transaction();
+            $sql = "DELETE FROM `activity` WHERE `aID` = :id";
+            $sth = $this->prepare($sql);
+            $sth->bindParam("id",$id);
+            $sth->execute();
+            
+            $sql = "DELETE FROM `signUpList` WHERE `aID` = :id";
+            $sth = $this->prepare($sql);
+            $sth->bindParam("id",$id);
+            $sth->execute();
+            
+            $this->commit();
+        }catch(Exception $e) {
+            
+        }
+        
+    }
+    /* @return bool */  
     function newActivity($name,$content,$persons,$bring,$start,$end,$competence,$limit){
         $sql = "INSERT INTO `activity`(`aName`,`aContent`,`aPersons`,`aRemain`,`aBringPersons`,`aStartTime`,`aEndTime`,`aCompetence`,`aLimit`) VALUES (:name,:content,:persons,:persons,:bring,:start,:end,:competence,:limit)";
         $sth = $this->prepare($sql);

@@ -41,11 +41,11 @@ class Member extends Database {
         return $row['mCompetence'];
     }
     
-    /* @return bool */  
+    /* @return string */  
     function signUpActivity($aID,$mID,$bring,$mCompetence) {
-        $this->transaction();
-        
         try {
+            $this->transaction();
+            
             // 搜尋活動資訊
             $sql = "SELECT * FROM `activity` WHERE `aID` = :id FOR UPDATE";
             $result = $this->prepare($sql);

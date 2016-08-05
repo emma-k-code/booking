@@ -1,3 +1,4 @@
+ <?php echo $data[2];?>
 <div class="content">
 <table>
   <thead>

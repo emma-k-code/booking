@@ -109,7 +109,7 @@ class AdminController extends Controller {
         
         $activityData = $this->model("Admin");
         
-        // 如果有送出資料(修改)
+        // 如果有送出資料(刪除)
         if (isset($_POST["submit"])) {
             $id = addslashes($_POST["submit"]);
             $name = addslashes($_POST["activityName"]);
@@ -121,17 +121,11 @@ class AdminController extends Controller {
             $competence = addslashes($_POST["activityCompetence"]);
             $limit = addslashes($_POST["activityLimit"]);
 
-            $result = $activityData->modifyActivity($id,$name,$content,$persons,$bring,$start,$end,$competence,$limit);
-            
-            if ($result) {
-                $result="修改成功";
-            }else {
-                $result="修改失敗";
-            }
+            $activityData->deleteActivity($id);
         }
         
         $activityList = $activityData->getActivityList();
-        $this->view("admin/admin",array("activityTable",$activityList));
+        $this->view("admin/admin",array("activityTable",$activityList,$result));
     }
     
     function member() {

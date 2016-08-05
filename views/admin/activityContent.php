@@ -35,5 +35,5 @@
     <label for="activityLimit">參與條件 (可輸入限制可參加的員工編號)</label>
     <input type="text" class="form-control" id="activityLimit" name="activityLimit" placeholder="" value="<?php echo $data["limit"]; ?>" >
   </div>
-  <button type="submit" class="btn btn-primary" id="submit" name="submit" value="<?php echo $data["id"]; ?>" >修改</button>
+  <button type="submit" class="btn btn-primary" id="submit" name="submit" value="<?php echo $data["id"]; ?>" >刪除</button>
 </form>
