@@ -23,7 +23,7 @@
       </td>
       <td>
         <i id="member-<?php echo $value["mID"];?>" class="glyphicon glyphicon-pencil button alterar" data-toggle="modal" data-target="#myModal"> </i>
-        <i class="glyphicon glyphicon-trash button excluir"></i>
+        <i id="delete-<?php echo $value["mID"];?>" class="glyphicon glyphicon-trash button excluir"></i>
       </td>
     </tr>
     
@@ -59,6 +59,15 @@
       $.get("getMember/" + toWhere[1], function(data){
           $(".myModal-body").html(data);
   	  });
+    }
+    
+    if(toWhere[0] == "delete") {
+      var r = confirm("確認刪除員工編號"+toWhere[1]+"的資料?");
+      if (r == true) {
+          $.get("deleteMember/" + toWhere[1], function(data){
+            location.reload();
+      	  });
+      }
     }
     
   }

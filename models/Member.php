@@ -57,7 +57,6 @@ class Member extends Database {
             }
             
             // 搜尋活動資訊
-            $result = null;
             $sql = "SELECT * FROM `activity` WHERE `aID` = :id FOR UPDATE";
             $result = $this->prepare($sql);
             $result->bindParam("id",$aID);
@@ -107,7 +106,6 @@ class Member extends Database {
             }
             
             // 新增報名員工
-            $sth = null;
             $sql = "INSERT INTO `signUpList`(`aID`,`mID`,`persons`) VALUES (:aID,:mID,:persons)";
             $sth = $this->prepare($sql);
             $sth->bindParam("aID",$aID);

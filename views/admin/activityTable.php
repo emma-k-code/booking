@@ -1,4 +1,3 @@
- <?php echo $data[2];?>
 <div class="content">
 <table>
   <thead>
@@ -43,6 +42,7 @@
     <?php endforeach ;?>
   </tbody>
 </table>
+<?php echo $data[2];?>
 
 </div>
 <!-- Modal -->

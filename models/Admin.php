@@ -59,6 +59,13 @@ class Admin extends Database {
         $sth->bindParam("oldID",$oldID);
         return $sth->execute();
     }
+    /* @return bool */  
+    function deleteMember($id){
+            $sql = "DELETE FROM `members` WHERE `mID` = :id";
+            $sth = $this->prepare($sql);
+            $sth->bindParam("id",$id);
+            return $sth->execute();
+    }
     /* @return array(array()) */  
     function getActivityList(){
         $sql = "SELECT * FROM `activity` ORDER BY `aEndTime`";
@@ -99,25 +106,31 @@ class Admin extends Database {
         $sth->bindParam("limit",$limit);
         return $sth->execute();
     }
-    /* @return bool */  
+    /* @return string */  
     function deleteActivity($id){
         try {
             $this->transaction();
             $sql = "DELETE FROM `activity` WHERE `aID` = :id";
             $sth = $this->prepare($sql);
             $sth->bindParam("id",$id);
-            $sth->execute();
+            if (!$sth->execute()) {
+                throw new Exception("刪除失敗");
+            }
             
             $sql = "DELETE FROM `signUpList` WHERE `aID` = :id";
             $sth = $this->prepare($sql);
             $sth->bindParam("id",$id);
-            $sth->execute();
+            if (!$sth->execute()) {
+                throw new Exception("刪除失敗");
+            }
             
             $this->commit();
         }catch(Exception $e) {
-            
+            $this->rollBack();
+            $error = $e->getMessage();
         }
         
+        return $error;
     }
     /* @return bool */  
     function newActivity($name,$content,$persons,$bring,$start,$end,$competence,$limit){

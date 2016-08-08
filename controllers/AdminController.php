@@ -121,7 +121,7 @@ class AdminController extends Controller {
             $competence = addslashes($_POST["activityCompetence"]);
             $limit = addslashes($_POST["activityLimit"]);
 
-            $activityData->deleteActivity($id);
+            $result = $activityData->deleteActivity($id);
         }
         
         $activityList = $activityData->getActivityList();
@@ -155,6 +155,11 @@ class AdminController extends Controller {
         
         $memberList = $memberData->getMemberList();
         $this->view("admin/admin",array("memberTable",$memberList));
+    }
+    
+    function deleteMember($id){
+        $memberData = $this->model("Admin");
+        $delete = $memberData->deleteMember($id);
     }
     
     function logout() {
