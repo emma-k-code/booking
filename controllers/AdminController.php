@@ -154,12 +154,12 @@ class AdminController extends Controller {
         }
         
         $memberList = $memberData->getMemberList();
-        $this->view("admin/admin",array("memberTable",$memberList));
+        $this->view("admin/admin",array("memberTable",$memberList,$result));
     }
     
     function deleteMember($id){
         $memberData = $this->model("Admin");
-        $delete = $memberData->deleteMember($id);
+        $memberData->deleteMember($id);
     }
     
     function logout() {

@@ -7,7 +7,7 @@ class Controller {
         return new $model ();
     }
     
-    public function view($view,$data=array()) {
+    public function view($view,$data = array()) {
         require_once "../BookingWeb/views/$view.php";
     }
 }

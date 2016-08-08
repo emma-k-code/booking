@@ -1,8 +1,18 @@
 <?php
-require_once "models/Database.php";
-
+require_once "models/Database.php"; // 資料庫類別
+/**
+ * 員工報名類別
+ *      員工報名相關方法
+ */
 class Member extends Database {
-    /* @return array */  
+    /**
+     * 取得活動資料
+     * 
+     * @param   string  $id 活動id
+     * @return  array
+     * 
+     * @method  object  $this->prepare()
+     */
     function getActivity($id){
         // 搜尋活動資訊
         $sql = "SELECT * FROM `activity` WHERE `aID` = :id";
@@ -16,7 +26,15 @@ class Member extends Database {
                         "competence"=>$row['aCompetence'],"limit"=>$row['aLimit'],"remain"=>$row['aRemain']);
         return $showData;
     }
-    /* @return int */  
+    
+    /**
+     * 取得活動剩餘人數
+     * 
+     * @param   string  $id 活動id
+     * @return  int
+     * 
+     * @method  object  $this->prepare()
+     */
     function getActivityPersons($id){
         // 搜尋活動資訊
         $sql = "SELECT * FROM `activity` WHERE `aID` = :id";
@@ -28,7 +46,16 @@ class Member extends Database {
         return $row['aRemain'];
         
     }
-    /* @return int */  
+    
+    /**
+     * 回傳資料庫中會員的權限
+     * 
+     * @param   string  $mID    會員id
+     * @param   string  $name   會員名稱
+     * @return  int
+     * 
+     * @method  object  $this->prepare()
+     */
     function getMemberCompetence($mID,$name) {
         // 搜尋員工權限
         $sql = "SELECT `mCompetence` FROM `members` WHERE `mID` = :id AND `mName` = :name";
@@ -40,7 +67,18 @@ class Member extends Database {
         $row = $result->fetch();
         return $row['mCompetence'];
     }
-    /* @return string */  
+    
+    /**
+     * 檢查報名資料 檢查OK將資料寫入資料庫
+     * 
+     * @param   string  $aID        活動id
+     * @param   string  $mID        會員id
+     * @param   string  $bring      攜帶的人數
+     * @param   string  $mCompetence會員權限
+     * @return  string
+     * 
+     * @method  object  $this->prepare()
+     */
     function signUpActivity($aID,$mID,$bring,$mCompetence) {
         try {
             $this->transaction();
@@ -123,7 +161,14 @@ class Member extends Database {
         
         return $error;
     }
-    /* @return bool */
+    
+    /**
+     * 檢查現在時間是否在可報名的時間範圍內
+     * 
+     * @param   string  $start  報名開始時間
+     * @param   string  $end    報名截止時間
+     * @return  bool
+     */
     function checkTime($start,$end) {
         date_default_timezone_set("Asia/Taipei");
         if (((time() - strtotime($start)) < 0) || ((time() - strtotime($end)) > 0)){

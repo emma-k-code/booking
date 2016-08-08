@@ -30,6 +30,7 @@
     <?php endforeach ;?>
   </tbody>
 </table>
+<?php echo $data[2];?>
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog">

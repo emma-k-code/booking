@@ -18,8 +18,6 @@ class Database {
     }
     
     /**
-     * Execute any SQL query
-     *
      * @param   string  SQL query
      * @return  object  
      */
